@@ -1,4 +1,3 @@
-
 document.getElementById('first-click').addEventListener('click', function () {
     var element = document.getElementById('second-click');
     element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -6,19 +5,18 @@ document.getElementById('first-click').addEventListener('click', function () {
 
 
 
- document.getElementById("A1").addEventListener("click", function(event){
-     console.log("click");
-    console.log(event)
-});
+document.getElementById("A1").addEventListener("click", function(event){
+    console.log("click");
+     console.log(event)
+ });
 
-document.addEventListener('click', handleClickEvent)
-
+ document.addEventListener('click', handleClickEvent)
  function handleClickEvent(event) {
-    console.log(event)
-    console.log(event.target.id)
+     console.log(event)
+     console.log(event.target.id)
     const id1 = event.target.id
    colorEnable(id1)
-
+ }
 document.addEventListener('click', handleClickEvent)
 
 function handleClickEvent(event) {
@@ -43,17 +41,20 @@ function colorEnable(m) {
         setBackgroundColorById(m)
         disabledElementById(m)
 
-       
+        
         seatCount = seatCount - 1;
         seatCount1('seat-count')
+
+       
+        seatCount2('seat-count2')
 
         
         ticketName1("price-div", m)
 
-     
+        
         totalPrice += 550
         totalPrice1('total-price')
-
+ 
         if (count < 4) {
             grandTotal += 550
             totalPrice1('grand-total')
@@ -62,14 +63,33 @@ function colorEnable(m) {
         else {
           
 
-            grandTotal1('grand-total')
+            const couponVal = document.getElementById('coupon')
+            if (couponVal.value == "NEW15" || couponVal.value == "Couple 20") {
+                const applyBtn = document.getElementById('btn-apply')
+                applyBtn.disabled = false;
+                grandTotal1('grand-total')
+
+           
+
+
+            }
+            else {
+                grandTotal += 550
+                const id = document.getElementById('grand-total')
+                id.innerText = grandTotal
+                // const p = document.createElement("p");
+                // p.innerHTML =
+                   // <p> alert! invalid coupon;
+                 couponVal.appendChild(p);
+            }
+
 
 
 
         }
 
 
-        phoneNumberInput.addEventListener('input', function() {
+        phoneNumberInput.addEventListener('input', function () {
             if (count > 0 && containsNumbers(this.value)) {
                 const btn = document.getElementById('next-button');
                 btn.disabled = false;
@@ -105,15 +125,19 @@ function seatCount1(m) {
     const id = document.getElementById(m)
     id.innerText = seatCount
 }
+function seatCount2(m) {
+    const id = document.getElementById(m)
+    id.innerText = count
+}
 function totalPrice1(m) {
     const id = document.getElementById(m)
     id.innerText = totalPrice
 }
 function grandTotal1(m) {
     grandTotal = grandTotal + 550
-    console.log(grandTotal)
+ 
     let discount = grandTotal * .15
-    console.log(discount)
+ 
     grandTotal = grandTotal - discount
     const id = document.getElementById(m)
     id.innerText = grandTotal
@@ -126,17 +150,15 @@ function disabledElementById(elementId) {
 }
 
 
-function showElementById(elementId) {
-    const element = document.getElementById(elementId);
-    element.classList.remove('hidden');
-}
-
 function setBackgroundColorById(elementId) {
     const element = document.getElementById(elementId);
-    element.classList.add('bg-green-400');
+    element.classList.add('bg-[green]');
 }
 
-function removeBackgroundColorById(elementId) {
-    const element = document.getElementById(elementId);
-    element.classList.remove('bg-green-400');
-}
+
+
+
+const reloads = document.getElementById('reload-btn')
+reloads.addEventListener('click',function(){
+    location.reload(true);
+})
