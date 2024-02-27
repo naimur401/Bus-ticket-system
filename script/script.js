@@ -1,164 +1,137 @@
-document.getElementById('first-click').addEventListener('click', function () {
-    var element = document.getElementById('second-click');
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+const buttn = document.getElementsByClassName('button')
+
+document.addEventListener("DOMContentLoaded", function() {
+  const buttons = document.querySelectorAll('.button');
+  let count = 0;
+  let total = 0;
+  let available = 32;
+  let couponApplied = false;
+
+  buttons.forEach(btn => {
+      btn.addEventListener('click', function() {
+          if (count < 4 && available > 0 && !btn.classList.contains('selected')) {
+              count++;
+              total = count * 550;
+              available--;
+              btn.classList.add('selected');
+          } else if (btn.classList.contains('selected')) {
+              count--;
+              total = count * 550;
+              available++;
+              btn.classList.remove('selected');
+          } else {
+              alert('Seat limit reached or seat already selected');
+          }
+
+          document.getElementById('cnt').textContent = count;
+          document.getElementById('tk').textContent = total;
+          document.getElementById('grand-total').textContent = total;
+          document.getElementById('available').textContent = available;
+          document.getElementById('available-2').textContent = available;
+          btn.style.backgroundColor = "green";
+
+          if (count === 4) {
+              document.getElementById('applyBtn').disabled = false;
+          } else {
+              document.getElementById('applyBtn').disabled = true;
+          }
+
+          if (count < 4 && couponApplied) {
+              cancelCoupon();
+          }
+      });
+  });
+
+  const applyBtn = document.getElementById('applyBtn');
+  const couponInput = document.getElementById('coupon');
+
+  applyBtn.addEventListener('click', function() {
+      applyCoupon(couponInput.value);
+  });
+
+  function applyCoupon(couponValue) {
+      if (couponValue === 'NEW15' && !couponApplied) {
+          const discount = Math.round(total * 0.15);
+          total -= discount;
+          document.getElementById('grand-total').textContent = total;
+          couponInput.disabled = true;
+          couponApplied = true;
+          applyBtn.disabled = true;
+      } else if (couponValue === 'Couple 20' && !couponApplied) {
+          const discount = Math.round(total * 0.20);
+          total -= discount;
+          document.getElementById('grand-total').textContent = total;
+          couponInput.disabled = true;
+          couponApplied = true;
+          applyBtn.disabled = true;
+      }
+  }
+
+  function cancelCoupon() {
+      total = count * 550;
+      document.getElementById('grand-total').textContent = total;
+      couponApplied = false;
+      couponInput.disabled = false;
+  }
+});
+
+
+function scrollToMainSection(){
+    const mainSection = document.getElementById('main-section');
+  
+        
+        const scrollOptions = {
+            behavior: 'smooth',
+        };
+  
+        mainSection.scrollIntoView(scrollOptions);
+  }
+
+
+
+
+
+
+const buttons = document.querySelectorAll('.button');
+const seatHistory = document.getElementById('new-p');
+let lastClickedButton = null;
+
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    if (lastClickedButton !== button) {
+      if (seatHistory.children.length < 4) {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = button.textContent.trim() + "_______________Economy" + "_______________500";
+        seatHistory.appendChild(paragraph);
+      } else {
+        alert('You have reached the maximum number of selections.');
+      }
+    }
+    lastClickedButton = button;
+  });
 });
 
 
 
-document.getElementById("A1").addEventListener("click", function(event){
-    console.log("click");
-     console.log(event)
- });
+document.getElementById('reload').addEventListener('click', function(event) {
+  window.location.reload();
+});
 
- document.addEventListener('click', handleClickEvent)
- function handleClickEvent(event) {
-     console.log(event)
-     console.log(event.target.id)
-    const id1 = event.target.id
-   colorEnable(id1)
- }
-document.addEventListener('click', handleClickEvent)
 
-function handleClickEvent(event) {
-    const selectedIds = ['A1', 'A2', 'A3', 'A4', 'B1', 'B2', 'B3', 'B4', 'C1', 'C2', 'C3', 'C4', 'D1', 'D2', 'D3', 'D4', 'E1', 'E2', 'E3', 'E4', 'F1', 'F2', 'F3', 'F4', 'G1', 'G2', 'G3', 'G4', 'H1', 'H2', 'H3', 'H4',];
 
-    if (selectedIds.includes(event.target.id)) {
-        const id = event.target.id;
-        colorEnable(id);
+document.getElementById('coupon').addEventListener('keyup', function(event){
+    const text = event.target.value
+    const dlt = document.getElementById('btn-apply')
+     if(text == '15% OFF'){
+        dlt.removeAttribute('disabled')
+      const offTk = tk * 0.8  
+   }
+   else{
+       dlt.setAttribute('disabled', true)
     }
-}
-
-
-let count = 0
-let seatCount = 40
-let totalPrice = 0
-let grandTotal = 0
-function colorEnable(m) {
-    const phoneNumberInput = document.getElementById('phone-number');
-
-    count += 1
-    if (count <= 4) {
-        setBackgroundColorById(m)
-        disabledElementById(m)
-
-        
-        seatCount = seatCount - 1;
-        seatCount1('seat-count')
-
-       
-        seatCount2('seat-count2')
-
-        
-        ticketName1("price-div", m)
-
-        
-        totalPrice += 550
-        totalPrice1('total-price')
- 
-        if (count < 4) {
-            grandTotal += 550
-            totalPrice1('grand-total')
-
-        }
-        else {
-          
-
-            const couponVal = document.getElementById('coupon')
-            if (couponVal.value == "NEW15" || couponVal.value == "Couple 20") {
-                const applyBtn = document.getElementById('btn-apply')
-                applyBtn.disabled = false;
-                grandTotal1('grand-total')
-
-           
-
-
-            }
-            else {
-                grandTotal += 550
-                const id = document.getElementById('grand-total')
-                id.innerText = grandTotal
-                // const p = document.createElement("p");
-                // p.innerHTML =
-                   // <p> alert! invalid coupon;
-                 couponVal.appendChild(p);
-            }
-
-
-
-
-        }
-
-
-        phoneNumberInput.addEventListener('input', function () {
-            if (count > 0 && containsNumbers(this.value)) {
-                const btn = document.getElementById('next-button');
-                btn.disabled = false;
-            }
-        });
-
-    }
-    else {
-        disabledElementById(m)
-
-    }
-
-
-}
-
-
-
-function containsNumbers(input) {
-    const digitRegex = /\d/;
-    return digitRegex.test(input);
-}
-
-function ticketName1(n, m) {
-    const divSection = document.createElement("div");
-    divSection.innerHTML =
-        <p> ${m}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Economy &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 550</p>;
-
-
-    document.getElementById(n).appendChild(divSection);
-}
-
-function seatCount1(m) {
-    const id = document.getElementById(m)
-    id.innerText = seatCount
-}
-function seatCount2(m) {
-    const id = document.getElementById(m)
-    id.innerText = count
-}
-function totalPrice1(m) {
-    const id = document.getElementById(m)
-    id.innerText = totalPrice
-}
-function grandTotal1(m) {
-    grandTotal = grandTotal + 550
- 
-    let discount = grandTotal * .15
- 
-    grandTotal = grandTotal - discount
-    const id = document.getElementById(m)
-    id.innerText = grandTotal
-}
-
-function disabledElementById(elementId) {
-    const element = document.getElementById(elementId);
-    element.disabled = true
-
-}
-
-
-function setBackgroundColorById(elementId) {
-    const element = document.getElementById(elementId);
-    element.classList.add('bg-[green]');
-}
-
-
-
-
-const reloads = document.getElementById('reload-btn')
-reloads.addEventListener('click',function(){
-    location.reload(true);
 })
+
+ document.getElementById('btn-apply').addEventListener('click', function(){
+    const grandTotal = document.getElementById('grand-total')
+    secret.style.display = 'none'
+ })
